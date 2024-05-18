@@ -3,6 +3,7 @@ package EtiyaCRM;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -27,32 +28,33 @@ public class DemographicPageTests {
         driver.quit();
     }
 
-
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {
-        driver.navigate().to("http://localhost:4200/search");
+        driver.navigate().to("http://localhost:4200/login");
+        Thread.sleep(2000);
+        driver.findElement(By.id("username")).click();
+        driver.findElement(By.id("username")).sendKeys("user1");
+        driver.findElement(By.id("password")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.id("password")).sendKeys("password1");
+        driver.findElement(By.cssSelector(".p-button-label")).click();
+        Thread.sleep(2000);
+
         driver.findElement(By.id("firstName")).click();
-        driver.findElement(By.id("firstName")).sendKeys("sss");
+        driver.findElement(By.id("firstName")).sendKeys("beste");
         driver.findElement(By.cssSelector("button:nth-child(2)")).click();
+
         Thread.sleep(2000);
-        {
-            WebElement element = driver.findElement(By.cssSelector("button:nth-child(2)"));
-            Actions builder = new Actions(driver);
-            builder.moveToElement(element).perform();
-        }
-        Thread.sleep(2000);
-        {
-            WebElement element = driver.findElement(By.tagName("body"));
-            Actions builder = new Actions(driver);
-            builder.moveToElement(element, 0, 0).perform();
-        }
         driver.findElement(By.cssSelector(".create-customer-section > button")).click();
         Thread.sleep(2000);
+
+
     }
 
     @Test
     public void cancel_button() throws InterruptedException{
-        driver.navigate().to("http://localhost:4200/create/demographic-info");
+        access_demographic_info_screen_AND_required_field();
+       // driver.navigate().to("http://localhost:4200/create/demographic-info");
         driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(1) > .ng-untouched")).click();
         Thread.sleep(2000);
         driver.findElement(By.xpath("//input")).sendKeys("test");
@@ -61,7 +63,8 @@ public class DemographicPageTests {
     }
     @Test
     public void empty_required_fields() throws InterruptedException{
-        driver.navigate().to("http://localhost:4200/create/demographic-info");
+        access_demographic_info_screen_AND_required_field();
+        //driver.navigate().to("http://localhost:4200/create/demographic-info");
         driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(1) > .ng-untouched")).click();
         driver.findElement(By.cssSelector(".etiya-demographic")).click();
         Thread.sleep(2000);
@@ -80,32 +83,18 @@ public class DemographicPageTests {
     }
     @Test
     public void successfullAddingDemographicInfo() throws InterruptedException {
-        WebDriver driver = new ChromeDriver();
-        driver.navigate().to("http://localhost:4200/search");
-        driver.manage().window().setSize(new Dimension(1936, 1048));
+        access_demographic_info_screen_AND_required_field();
 
-        driver.findElement(By.id("firstName")).click();
-        driver.findElement(By.id("firstName")).sendKeys("melodi");
-        driver.findElement(By.cssSelector("button:nth-child(2)")).click();
-
-        // Adding a delay
         Thread.sleep(2000);
-
-        driver.findElement(By.cssSelector(".create-customer-section > button")).click();
-
-        // Adding a delay
-        Thread.sleep(2000);
-
         driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-invalid")).click();
-        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("melodi");
+        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("beste");
 
-        // Adding a delay
+
         Thread.sleep(2000);
-
         driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(2) > .ng-untouched")).click();
         driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("bayraktar");
 
-        // Adding a delay
+
         Thread.sleep(2000);
 
         driver.findElement(By.cssSelector(".form-select")).click();
@@ -114,39 +103,27 @@ public class DemographicPageTests {
             dropdown.findElement(By.xpath("//option[. = 'Female']")).click();
         }
 
-        // Adding a delay
         Thread.sleep(2000);
-
         driver.findElement(By.xpath("//input[@type='date']")).click();
-       // driver.findElement(By.xpath("//input[@type='date']")).sendKeys("0001-09-04");
-        //driver.findElement(By.xpath("//input[@type='date']")).sendKeys("0019-09-04");
-        //driver.findElement(By.xpath("//input[@type='date']")).sendKeys("0199-09-04");
         driver.findElement(By.xpath("//input[@type='date']")).sendKeys("1999-09-04");
 
-        // Adding a delay
-        Thread.sleep(2000);
 
+        Thread.sleep(2000);
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).click();
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("12345678910");
 
-        // Adding a delay
         Thread.sleep(2000);
-
         driver.findElement(By.cssSelector(".etiya-demographic")).click();
 
-        // Adding a delay
-        Thread.sleep(2000);
 
+        Thread.sleep(2000);
         driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-untouched")).click();
         driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-untouched")).sendKeys("melodi");
 
-        // Adding a delay
-        Thread.sleep(2000);
 
+        Thread.sleep(2000);
         driver.findElement(By.cssSelector(".next-button")).click();
 
-        // Close the driver
-        driver.quit();
     }
 
 
