@@ -50,7 +50,6 @@ public class DemographicPageTests {
 
 
     }
-
     @Test
     public void cancel_button() throws InterruptedException{
         access_demographic_info_screen_AND_required_field();
@@ -125,6 +124,18 @@ public class DemographicPageTests {
         driver.findElement(By.cssSelector(".next-button")).click();
 
     }
+    @Test
+    public void nationalityIDVerification() throws  InterruptedException {
+        access_demographic_info_screen_AND_required_field();
+        driver.findElement(By.cssSelector(".inputs:nth-child(4) > .ng-invalid")).click();
+        driver.findElement(By.cssSelector(".form")).click();
+        driver.findElement(By.cssSelector(".error")).click();
+        driver.findElement(By.cssSelector(".error")).sendKeys("121");
+        driver.findElement(By.cssSelector(".form")).click();
+        driver.findElement(By.cssSelector(".error")).click();
+        driver.findElement(By.cssSelector(".ng-touched:nth-child(2)")).sendKeys("12121221212");
+    }
+
 
 
 
