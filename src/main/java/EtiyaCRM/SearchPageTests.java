@@ -252,7 +252,7 @@ public class SearchPageTests {
 
     //Customer ID, ID number, Order Number, Account Number ile arama
     public void filter_by_content_2() throws InterruptedException{
-    //id ile arama yapma hatalı sonuç veriyor sonra eklenecek
+    //id ile arama yapma hatalı sonuç veriyor sonra eklenecek!
     }
 
 
