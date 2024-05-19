@@ -93,9 +93,22 @@ public class SearchPageTests {
         Thread.sleep(2000);
         driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
         driver.findElement(By.id("secondName")).click();
-        driver.findElement(By.id("secondName")).sendKeys("e");
-        Thread.sleep(2000);
+        driver.findElement(By.id("secondName")).sendKeys("a");
         driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        driver.findElement(By.id("idNumber")).click();
+        driver.findElement(By.id("idNumber")).sendKeys("13");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        driver.findElement(By.id("customerId")).click();
+        driver.findElement(By.id("idNumber")).click();
+
+        driver.findElement(By.id("idNumber")).sendKeys("9");
+        driver.findElement(By.id("customerId")).sendKeys("333c");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(2000);
     }
 
     //successful textbox ve unsuccessful  textbox testleri manuel gösterilebilir
@@ -176,9 +189,9 @@ public class SearchPageTests {
 
         driver.findElement(By.id("secondName")).click();
         driver.findElement(By.id("secondName")).sendKeys("cAn");
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
 
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(2000);
     }
 
 //filter by content tests
@@ -251,8 +264,34 @@ public class SearchPageTests {
  }
 
     //Customer ID, ID number, Order Number, Account Number ile arama
+    // (Order Number, Account Number ile arama yapma sayfalar gelince eklenecek)
+    @Test
     public void filter_by_content_2() throws InterruptedException{
-    //id ile arama yapma hatalı sonuç veriyor sonra eklenecek!
+
+        access_search_screen();
+        driver.findElement(By.id("customerId")).click();
+        driver.findElement(By.id("customerId")).sendKeys("33c");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+
+        driver.findElement(By.id("idNumber")).click();
+        driver.findElement(By.id("idNumber")).sendKeys("91");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        driver.findElement(By.id("idNumber")).click();
+        driver.findElement(By.id("idNumber")).sendKeys("914");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(5000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        driver.findElement(By.id("idNumber")).click();
+        driver.findElement(By.id("idNumber")).sendKeys("91");
+        driver.findElement(By.id("customerId")).click();
+        driver.findElement(By.id("customerId")).sendKeys("7ad");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(5000);
+
     }
 
 
