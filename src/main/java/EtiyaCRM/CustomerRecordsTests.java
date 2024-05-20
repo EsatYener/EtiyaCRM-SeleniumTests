@@ -16,6 +16,15 @@ public class CustomerRecordsTests {
     public void setUp() {
         driver = new ChromeDriver();
         js = (JavascriptExecutor) driver;
+
+        driver.navigate().to("http://localhost:4200/login");
+        driver.manage().window().maximize();
+        driver.findElement(By.id("username")).click();
+        driver.findElement(By.id("username")).sendKeys("user1");
+        driver.findElement(By.id("password")).click();
+        driver.findElement(By.id("password")).sendKeys("password1");
+        driver.findElement(By.xpath("//button[contains(.,'Login')]")).click();
+
     }
     @After
     public void tearDown() {
@@ -25,14 +34,6 @@ public class CustomerRecordsTests {
 
     @Test
     public void record_list_sorting() throws InterruptedException{
-        driver.navigate().to("http://localhost:4200/login");
-        driver.manage().window().maximize();
-        driver.findElement(By.id("username")).click();
-        driver.findElement(By.id("username")).sendKeys("user1");
-        driver.findElement(By.id("password")).click();
-        driver.findElement(By.id("password")).sendKeys("password1");
-        driver.findElement(By.xpath("//button[contains(.,'Login')]")).click();
-        Thread.sleep(5000);
         driver.findElement(By.id("firstName")).click();
         driver.findElement(By.id("firstName")).sendKeys("e");
         driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
@@ -47,16 +48,22 @@ public class CustomerRecordsTests {
     }
 
     @Test
-    public void record_list_limitation_and_pagination() throws InterruptedException{
-        driver.navigate().to("http://localhost:4200/login");
-        driver.manage().window().maximize();
-        driver.findElement(By.id("username")).click();
-        driver.findElement(By.id("username")).sendKeys("user1");
-        driver.findElement(By.id("password")).click();
-        driver.findElement(By.id("password")).sendKeys("password1");
-        driver.findElement(By.xpath("//button[contains(.,'Login')]")).click();
+    public void record_list_limitation() throws InterruptedException{
+        driver.findElement(By.id("firstName")).click();
+        driver.findElement(By.id("firstName")).sendKeys("a");
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
         Thread.sleep(3000);
+        driver.findElement(By.cssSelector(".p-dropdown-trigger-icon")).click();
+        driver.findElement(By.id("pn_id_3_2")).click();
+        driver.findElement(By.cssSelector(".p-dropdown-trigger-icon")).click();
+        driver.findElement(By.id("pn_id_3_1")).click();
+        driver.findElement(By.cssSelector(".p-dropdown-trigger")).click();
+        driver.findElement(By.id("pn_id_3_0")).click();
 
+    }
+
+    @Test
+    public void record_list_pagination() throws InterruptedException{
         driver.findElement(By.id("firstName")).click();
         driver.findElement(By.id("firstName")).sendKeys("a");
         driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
@@ -97,7 +104,6 @@ public class CustomerRecordsTests {
         driver.findElement(By.xpath("//li[@id='pn_id_3_3']/span")).click();
         Thread.sleep(2000);
     }
-
 
 
 

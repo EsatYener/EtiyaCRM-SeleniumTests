@@ -47,7 +47,7 @@ public class SearchPageTests {
       access_search_screen();
       Thread.sleep(3000);
       driver.findElement(By.id("idNumber")).click();
-      driver.findElement(By.id("idNumber")).sendKeys("testid123*.-");
+      driver.findElement(By.id("idNumber")).sendKeys("123");
       driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
       Thread.sleep(2000);
       driver.findElement(By.id("firstName")).click();
@@ -59,7 +59,7 @@ public class SearchPageTests {
       driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
       Thread.sleep(2000);
       driver.findElement(By.id("idNumber")).click();
-      driver.findElement(By.id("idNumber")).sendKeys("test12*");
+      driver.findElement(By.id("idNumber")).sendKeys("123");
       driver.findElement(By.id("customerId")).click();
       driver.findElement(By.id("customerId")).sendKeys("test123*#");
       driver.findElement(By.id("accountNumber")).click();
