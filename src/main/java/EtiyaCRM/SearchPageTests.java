@@ -12,6 +12,12 @@ import java.util.Map;
 
 public class SearchPageTests extends BaseTest{
 
+    @Before
+    public void setUp(){
+        accessLoginScreen();
+        performLogin("user1","password1");
+    }
+
     //access search screen and visibility fields
     public void access_search_screen() throws InterruptedException {
         navigateToLogin();
@@ -27,12 +33,6 @@ public class SearchPageTests extends BaseTest{
         driver.manage().window().maximize();
     }
 
-    private void performLogin(String username, String password) throws InterruptedException {
-        enterText(By.id("username"), username);
-        enterText(By.id("password"), password);
-        clickElement(By.xpath("//button[contains(.,'Login')]"));
-        Thread.sleep(2000);
-    }
 
     private void performSearchAndClear(String fieldId, String value) throws InterruptedException {
         WebElement element = driver.findElement(By.id(fieldId));
@@ -48,19 +48,6 @@ public class SearchPageTests extends BaseTest{
         element.sendKeys(value);
         driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
         Thread.sleep(1000);
-    }
-
-
-    private void enterText(By locator, String text) throws InterruptedException {
-        WebElement element = driver.findElement(locator);
-        element.click();
-        Thread.sleep(1000);
-        element.sendKeys(text);
-    }
-
-    private void clickElement(By locator) throws InterruptedException {
-        driver.findElement(locator).click();
-        Thread.sleep(2000);
     }
 
 

@@ -9,46 +9,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerRecordsTests {
-    private WebDriver driver;
-    private Map<String, Object> vars;
-    private JavascriptExecutor js;
+public class CustomerRecordsTests extends BaseTest {
 
     @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        js = (JavascriptExecutor) driver;
-        vars = new HashMap<>();
+    public void setUp(){
         accessLoginScreen();
-        performLogin("user1", "password1");
+        performLogin("user1","password1");
     }
-
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
-    private void accessLoginScreen() {
-        driver.navigate().to("http://localhost:4200/login");
-        driver.manage().window().maximize();
-    }
-
-    private void performLogin(String username, String password) {
-        enterText(By.id("username"), username);
-        enterText(By.id("password"), password);
-        clickElement(By.xpath("//button[contains(.,'Login')]"));
-    }
-
-    private void enterText(By locator, String text) {
-        WebElement element = driver.findElement(locator);
-        element.click();
-        element.sendKeys(text);
-    }
-
-    private void clickElement(By locator) {
-        driver.findElement(locator).click();
-    }
-
     @Test
     public void record_list_sorting() throws InterruptedException {
         searchAndClear("firstName", "m");
@@ -66,7 +33,7 @@ public class CustomerRecordsTests {
         for (String option : dropdownOptions) {
             clickElement(By.cssSelector(".p-dropdown-trigger-icon"));
             clickElement(By.id(option));
-            Thread.sleep(3000);
+            Thread.sleep(1000);
         }
     }
 

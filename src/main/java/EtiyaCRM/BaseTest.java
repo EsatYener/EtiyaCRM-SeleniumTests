@@ -3,6 +3,7 @@ package EtiyaCRM;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,12 +14,17 @@ import java.util.Map;
 public class BaseTest {
     // BeforeEach -> TestCase -> AfterEach
         protected WebDriver driver;
+        protected JavascriptExecutor js;
         //protected WebElementActions elementActions;
         protected Map<String, Object> vars;
 
         public BaseTest() {
             //setUp
             driver = new ChromeDriver();
+            js = (JavascriptExecutor) driver;
+            vars = new HashMap<>();
+
+
 
             // WebElementActions nesnesini WebDriver ile başlat
             //elementActions = new WebElementActions(driver);
@@ -45,23 +51,26 @@ public class BaseTest {
         }
         */
 
-
-
-        public void login(String username, String password) throws InterruptedException {
-            // kullanımı:  login("user1", "password1");
+        protected void accessLoginScreen() {
             driver.navigate().to("http://localhost:4200/login");
             driver.manage().window().maximize();
-
-            WebElement usernameInput = driver.findElement(By.id("username"));
-            usernameInput.click();
-            usernameInput.sendKeys(username);
-
-            WebElement passwordInput = driver.findElement(By.id("password"));
-            passwordInput.click();
-            //waitFor(2000);
-            passwordInput.sendKeys(password);
-            driver.findElement(By.xpath("//button[contains(.,'Login')]")).click();
-            Thread.sleep(2000);
         }
+
+        protected void performLogin(String username, String password) {
+            enterText(By.id("username"), username);
+            enterText(By.id("password"), password);
+            clickElement(By.xpath("//button[contains(.,'Login')]"));
+        }
+        protected void enterText(By locator, String text) {
+            WebElement element = driver.findElement(locator);
+            element.click();
+            element.sendKeys(text);
+        }
+        protected void clickElement(By locator) {
+            driver.findElement(locator).click();
+        }
+
+
+
 }
 
