@@ -11,26 +11,15 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DemographicPageTests {
-
-    // BeforeEach -> TestCase -> AfterEach
-    private WebDriver driver;
-    private Map<String, Object> vars;
-    JavascriptExecutor js;
+public class DemographicPageTests extends BaseTest {
     @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        js = (JavascriptExecutor) driver;
-        vars = new HashMap<String, Object>();
-    }
-    @After
-    public void tearDown() {
-        driver.quit();
+    public void beforeTest() throws InterruptedException {
+        login("user1", "password1");
     }
 
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {
-        driver.navigate().to("http://localhost:4200/login");
+        /*driver.navigate().to("http://localhost:4200/login");
         Thread.sleep(2000);
         driver.findElement(By.id("username")).click();
         driver.findElement(By.id("username")).sendKeys("user1");
@@ -38,7 +27,7 @@ public class DemographicPageTests {
         Thread.sleep(2000);
         driver.findElement(By.id("password")).sendKeys("password1");
         driver.findElement(By.cssSelector(".p-button-label")).click();
-        Thread.sleep(2000);
+        Thread.sleep(2000);*/
 
         driver.findElement(By.id("firstName")).click();
         driver.findElement(By.id("firstName")).sendKeys("beste");

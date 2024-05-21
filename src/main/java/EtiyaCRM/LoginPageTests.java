@@ -13,22 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.testng.Assert;
 
-public class LoginPageTests {
-
-    // BeforeEach -> TestCase -> AfterEach
-    private WebDriver driver;
-    private Map<String, Object> vars;
-    JavascriptExecutor js;
-    @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        js = (JavascriptExecutor) driver;
-        vars = new HashMap<String, Object>();
-    }
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
+public class LoginPageTests extends BaseTest{
 
     @Test
     public void succesfull_login() throws InterruptedException {

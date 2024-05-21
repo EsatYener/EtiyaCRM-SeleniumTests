@@ -8,30 +8,12 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
-public class CustomerRecordsTests {
+public class CustomerRecordsTests extends BaseTest{
     //FR3-Customer Records Tests
-    private WebDriver driver;
-    JavascriptExecutor js;
     @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        js = (JavascriptExecutor) driver;
-
-        driver.navigate().to("http://localhost:4200/login");
-        driver.manage().window().maximize();
-        driver.findElement(By.id("username")).click();
-        driver.findElement(By.id("username")).sendKeys("user1");
-        driver.findElement(By.id("password")).click();
-        driver.findElement(By.id("password")).sendKeys("password1");
-        driver.findElement(By.xpath("//button[contains(.,'Login')]")).click();
-
+    public void beforeTest() throws InterruptedException {
+        login("user1", "password1");
     }
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
-
     @Test
     public void record_list_sorting() throws InterruptedException{
         driver.findElement(By.id("firstName")).click();

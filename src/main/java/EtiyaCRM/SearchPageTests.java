@@ -10,22 +10,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SearchPageTests {
-
-    // BeforeEach -> TestCase -> AfterEach
-    private WebDriver driver;
-    private Map<String, Object> vars;
-    JavascriptExecutor js;
-    @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        js = (JavascriptExecutor) driver;
-        vars = new HashMap<String, Object>();
-    }
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
+public class SearchPageTests extends BaseTest{
 
     //access search screen and visibility fields
     public void access_search_screen() throws InterruptedException {
