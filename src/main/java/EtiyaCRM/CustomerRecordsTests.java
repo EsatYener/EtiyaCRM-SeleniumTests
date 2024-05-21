@@ -58,7 +58,9 @@ public class CustomerRecordsTests {
 
     @Test
     public void record_list_limitation() throws InterruptedException {
+
         search("firstName", "a");
+
         String[] dropdownOptions = {"pn_id_3_2", "pn_id_3_1", "pn_id_3_0"};
 
         for (String option : dropdownOptions) {
