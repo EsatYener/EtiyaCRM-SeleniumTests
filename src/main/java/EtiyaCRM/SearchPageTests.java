@@ -34,10 +34,27 @@ public class SearchPageTests extends BaseTest{
         Thread.sleep(2000);
     }
 
+    private void performSearchAndClear(String fieldId, String value) throws InterruptedException {
+        WebElement element = driver.findElement(By.id(fieldId));
+        element.click();
+        element.sendKeys(value);
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+    }
+    private void performSearch(String fieldId, String value) throws InterruptedException {
+        WebElement element = driver.findElement(By.id(fieldId));
+        element.click();
+        element.sendKeys(value);
+        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        Thread.sleep(1000);
+    }
+
+
     private void enterText(By locator, String text) throws InterruptedException {
         WebElement element = driver.findElement(locator);
         element.click();
-        Thread.sleep(500); // Bekleme süresi, kullanıcı etkileşimini simüle etmek için
+        Thread.sleep(1000);
         element.sendKeys(text);
     }
 
@@ -52,9 +69,9 @@ public class SearchPageTests extends BaseTest{
   @Test
   public void clear_button() throws InterruptedException {
       access_search_screen();
-      Thread.sleep(3000);
+      Thread.sleep(1000);
 
-
+      // Test verileri ve ilgili alanların id'leri
       String[][] testData = {
               {"idNumber", "testid123*.-"},
               {"firstName", "John"},
@@ -69,76 +86,56 @@ public class SearchPageTests extends BaseTest{
               {"orderNumber", "order1*#"}
       };
 
-      for (String[] data : testData) {
-          driver.findElement(By.id(data[0])).click();
-          driver.findElement(By.id(data[0])).sendKeys(data[1]);
-      }
-
-      int clearButtonClicks = 3; // Kaç kez Clear butonuna tıklanacağını belirtiyoruz.
-      for (int i = 0; i < clearButtonClicks; i++) {
-          driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-          Thread.sleep(2000);
+      for (int i = 0; i < testData.length; i++) {
+          driver.findElement(By.id(testData[i][0])).click();
+          driver.findElement(By.id(testData[i][0])).sendKeys(testData[i][1]);
+          Thread.sleep(500);
+          if (i == 2 || i == 5 || i == 6 || i == 9 || i == testData.length - 1) {
+              driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+              Thread.sleep(2000);
+          }
       }
   }
 
-  //search button test
-    @Test
-    public void search_button() throws InterruptedException{
-        access_search_screen();
-        driver.findElement(By.id("firstName")).click();
-        driver.findElement(By.id("firstName")).sendKeys("esat");
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("lastName")).click();
-        driver.findElement(By.id("lastName")).sendKeys("yener");
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("secondName")).click();
-        driver.findElement(By.id("secondName")).sendKeys("a");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("idNumber")).click();
-        driver.findElement(By.id("idNumber")).sendKeys("13");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("customerId")).click();
-        driver.findElement(By.id("idNumber")).click();
 
-        driver.findElement(By.id("idNumber")).sendKeys("9");
-        driver.findElement(By.id("customerId")).sendKeys("333c");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-    }
+  //search button test
+  @Test
+  public void search_button() throws InterruptedException {
+
+      access_search_screen();
+
+      String[][] testData = {
+              {"firstName", "esat"},
+              {"lastName", "yener"},
+              {"secondName", "a"},
+              {"idNumber", "13"},
+              {"idNumber", "9"},
+              {"customerId", "333c"}
+      };
+
+      for (String[] data : testData) {
+          driver.findElement(By.id(data[0])).click();
+          driver.findElement(By.id(data[0])).sendKeys(data[1]);
+          Thread.sleep(2000);
+          driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+          Thread.sleep(2000);
+          driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+      }
+  }
+
+
 
     //successful textbox ve unsuccessful  textbox testleri manuel gösterilebilir
-
 
     //no matching customer record test
     @Test
     public void no_matching_customer_record() throws InterruptedException {
         access_search_screen();
-        Thread.sleep(2000);
-        driver.findElement(By.id("firstName")).click();
-        driver.findElement(By.id("firstName")).sendKeys("nonexist");
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1000);
 
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        performSearchAndClear("firstName", "esat");
 
-        driver.findElement(By.id("firstName")).click();
-        driver.findElement(By.id("firstName")).sendKeys("Ece");
-        driver.findElement(By.id("idNumber")).click();
-        driver.findElement(By.id("idNumber")).sendKeys("99999999999"); //nationalityid
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
+        performSearch("firstName", "nonexist");
 
         driver.findElement(By.xpath("//button[contains(.,'Create Customer')]")).click();
         Thread.sleep(2000);
@@ -146,133 +143,64 @@ public class SearchPageTests extends BaseTest{
     }
 
     //case sensitivity test
+
+
     @Test
     public void case_sensitivity() throws InterruptedException {
+
         String[] firstNames = {"esat", "EsAt", "ESAT"};
         String[] lastNames = {"yEnER", "YENER", "yenER"};
 
         access_search_screen();
 
         for (String firstName : firstNames) {
-            driver.findElement(By.id("firstName")).click();
-            driver.findElement(By.id("firstName")).sendKeys(firstName);
-            driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-            Thread.sleep(1000);
-            driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+            performSearchAndClear("firstName", firstName);
         }
 
+        // Soyisimler için arama ve temizleme işlemleri
         for (String lastName : lastNames) {
-            driver.findElement(By.id("lastName")).click();
-            driver.findElement(By.id("lastName")).sendKeys(lastName);
-            driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-            Thread.sleep(1000);
-            driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+            performSearchAndClear("lastName", lastName);
         }
 
-        Thread.sleep(2000);
+        Thread.sleep(1000);
     }
+
 
 
 //filter by content tests
-    @Test
-    public void filter_by_content() throws InterruptedException {
-        access_search_screen();
-        Thread.sleep(3000);
-        //firstname ile
-        WebElement firstName = driver.findElement(By.id("firstName"));
-        driver.findElement(By.id("firstName")).click();
-        firstName.sendKeys("John");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        firstName.clear(); //driver.findElement(By.xpath("//button[contains(.,\'Clear\')]")).click();
-        Thread.sleep(3000);
-        driver.findElement(By.id("firstName")).click();
-        firstName.sendKeys("Jo");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        firstName.clear();
-        Thread.sleep(3000);
-        driver.findElement(By.id("firstName")).click();
-        firstName.sendKeys("o");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        firstName.clear();
-        Thread.sleep(3000);
-        driver.findElement(By.id("firstName")).click();
-        firstName.sendKeys("J");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        firstName.clear();
-        firstName.sendKeys("hn");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-        firstName.clear();
-        firstName.sendKeys("ohn");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(2000);
-     /*
-        //second name ve last name için ekstra
-        WebElement secondName = driver.findElement(By.id("secondName"));
-        driver.findElement(By.id("secondName")).click();
-        secondName.sendKeys("eren");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        secondName.clear();
-        Thread.sleep(3000);
+@Test
+public void filter_by_content() throws InterruptedException {
 
-        driver.findElement(By.id("secondName")).click();
-        secondName.sendKeys("re");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        secondName.clear();
-        Thread.sleep(3000);
+    access_search_screen();
 
-        driver.findElement(By.id("secondName")).click();
-        secondName.sendKeys("en");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        secondName.clear();
-        Thread.sleep(3000);
-        driver.findElement(By.id("secondName")).click();
-        secondName.sendKeys("eR");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(3000);
-        secondName.clear();
-        Thread.sleep(3000);  */
+    Thread.sleep(1000);
 
- }
+    String[] firstNames = {"Esat", "Es", "s", "E", "sa", "sat"};
 
-    //Customer ID, ID number, Order Number, Account Number ile arama
-    // (Order Number, Account Number ile arama yapma sayfalar gelince eklenecek)
-    @Test
-    public void filter_by_content_2() throws InterruptedException{
+    String[] lastNames = {"yener", "yen", "er", "En"};
 
-        access_search_screen();
-        driver.findElement(By.id("customerId")).click();
-        driver.findElement(By.id("customerId")).sendKeys("33c");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+    String[] customerIds = {"33c", "7ad"};
 
-        driver.findElement(By.id("idNumber")).click();
-        driver.findElement(By.id("idNumber")).sendKeys("91");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("idNumber")).click();
-        driver.findElement(By.id("idNumber")).sendKeys("914");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
-        driver.findElement(By.id("idNumber")).click();
-        driver.findElement(By.id("idNumber")).sendKeys("91");
-        driver.findElement(By.id("customerId")).click();
-        driver.findElement(By.id("customerId")).sendKeys("7ad");
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
-        Thread.sleep(5000);
+    String[] idNumbers = {"91", "914"};
 
+    for (String firstName : firstNames) {
+        performSearchAndClear("firstName", firstName);
     }
 
+    for (String lastName : lastNames) {
+        performSearchAndClear("lastName", lastName);
+    }
+
+    for (String customerId : customerIds) {
+        performSearchAndClear("customerId", customerId);
+    }
+
+    for (String idNumber : idNumbers) {
+        performSearchAndClear("idNumber", idNumber);
+    }
+}
+
+    // (Order Number, Account Number ile arama yapma sayfalar gelince eklenecek)
 
 
 }
