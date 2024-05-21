@@ -19,20 +19,10 @@ public class SearchPageTests extends BaseTest{
     }
 
     //access search screen and visibility fields
-    public void access_search_screen() throws InterruptedException {
-        navigateToLogin();
-        maximizeWindow();
-        performLogin("user1", "password1");
-    }
-
-    private void navigateToLogin() {
-        driver.navigate().to("http://localhost:4200/login");
-    }
 
     private void maximizeWindow() {
         driver.manage().window().maximize();
     }
-
 
     private void performSearchAndClear(String fieldId, String value) throws InterruptedException {
         WebElement element = driver.findElement(By.id(fieldId));
@@ -50,12 +40,11 @@ public class SearchPageTests extends BaseTest{
         Thread.sleep(1000);
     }
 
-
     //clear button test
 
   @Test
   public void clear_button() throws InterruptedException {
-      access_search_screen();
+
       Thread.sleep(1000);
 
       // Test verileri ve ilgili alanların id'leri
@@ -84,12 +73,10 @@ public class SearchPageTests extends BaseTest{
       }
   }
 
-
   //search button test
   @Test
   public void search_button() throws InterruptedException {
 
-      access_search_screen();
 
       String[][] testData = {
               {"firstName", "esat"},
@@ -111,13 +98,12 @@ public class SearchPageTests extends BaseTest{
   }
 
 
-
     //successful textbox ve unsuccessful  textbox testleri manuel gösterilebilir
 
     //no matching customer record test
     @Test
     public void no_matching_customer_record() throws InterruptedException {
-        access_search_screen();
+
         Thread.sleep(1000);
 
         performSearchAndClear("firstName", "esat");
@@ -131,14 +117,13 @@ public class SearchPageTests extends BaseTest{
 
     //case sensitivity test
 
-
     @Test
     public void case_sensitivity() throws InterruptedException {
 
         String[] firstNames = {"esat", "EsAt", "ESAT"};
         String[] lastNames = {"yEnER", "YENER", "yenER"};
 
-        access_search_screen();
+
 
         for (String firstName : firstNames) {
             performSearchAndClear("firstName", firstName);
@@ -153,12 +138,11 @@ public class SearchPageTests extends BaseTest{
     }
 
 
-
 //filter by content tests
 @Test
 public void filter_by_content() throws InterruptedException {
 
-    access_search_screen();
+
 
     Thread.sleep(1000);
 

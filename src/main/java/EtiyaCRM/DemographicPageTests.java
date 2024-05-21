@@ -13,9 +13,6 @@ import java.util.Map;
 
 public class DemographicPageTests extends BaseTest {
     @Before
-    public void beforeTest() throws InterruptedException {
-        login("user1", "password1");
-    }
 
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {

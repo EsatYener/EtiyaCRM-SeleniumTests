@@ -70,6 +70,11 @@ public class BaseTest {
             driver.findElement(locator).click();
         }
 
+    private void maximizeWindow() {
+        driver.manage().window().maximize();
+    }
+
+
 
 
 }
