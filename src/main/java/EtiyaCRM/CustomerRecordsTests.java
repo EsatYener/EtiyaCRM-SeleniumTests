@@ -48,19 +48,21 @@ public class CustomerRecordsTests {
     }
 
     @Test
-    public void record_list_limitation() throws InterruptedException{
+    public void record_list_limitation() throws InterruptedException {
+        String[] dropdownOptions = {"pn_id_3_2", "pn_id_3_1", "pn_id_3_0"};
+
         driver.findElement(By.id("firstName")).click();
         driver.findElement(By.id("firstName")).sendKeys("a");
         driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
         Thread.sleep(3000);
-        driver.findElement(By.cssSelector(".p-dropdown-trigger-icon")).click();
-        driver.findElement(By.id("pn_id_3_2")).click();
-        driver.findElement(By.cssSelector(".p-dropdown-trigger-icon")).click();
-        driver.findElement(By.id("pn_id_3_1")).click();
-        driver.findElement(By.cssSelector(".p-dropdown-trigger")).click();
-        driver.findElement(By.id("pn_id_3_0")).click();
 
+        for (String option : dropdownOptions) {
+            driver.findElement(By.cssSelector(".p-dropdown-trigger-icon")).click();
+            driver.findElement(By.id(option)).click();
+            Thread.sleep(3000);
+        }
     }
+
 
     @Test
     public void record_list_pagination() throws InterruptedException{
