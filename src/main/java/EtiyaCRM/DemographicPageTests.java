@@ -3,34 +3,20 @@ package EtiyaCRM;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class DemographicPageTests extends BaseTest {
     @Before
     public void setUp(){
         accessLoginScreen();
         performLogin("user1","password1");
-        driver.navigate().to("http://localhost:4200/create/demographic-info");
+        //driver.navigate().to("http://localhost:4200/create/demographic-info");
     }
 
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {
-        /*driver.navigate().to("http://localhost:4200/login");
-        Thread.sleep(2000);
-        driver.findElement(By.id("username")).click();
-        driver.findElement(By.id("username")).sendKeys("user1");
-        driver.findElement(By.id("password")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.id("password")).sendKeys("password1");
-        driver.findElement(By.cssSelector(".p-button-label")).click();
-        Thread.sleep(2000);*/
-
         driver.findElement(By.id("firstName")).click();
         driver.findElement(By.id("firstName")).sendKeys("beste");
         driver.findElement(By.cssSelector("button:nth-child(2)")).click();
@@ -43,36 +29,33 @@ public class DemographicPageTests extends BaseTest {
     }
     @Test
     public void cancel_button() throws InterruptedException{
+        //driver.navigate().to("http://localhost:4200/create/demographic-info"); //test sonunda searche değil logine dönüyor
         access_demographic_info_screen_AND_required_field();
-       // driver.navigate().to("http://localhost:4200/create/demographic-info");
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(1) > .ng-untouched")).click();
-        Thread.sleep(2000);
         driver.findElement(By.xpath("//input")).sendKeys("test");
+        Thread.sleep(2000);
         driver.findElement(By.cssSelector(".cancel-button")).click();
         Thread.sleep(2000);
-    }
+  }
     @Test
     public void empty_required_fields() throws InterruptedException{
-        //driver.navigate().to("http://localhost:4200/create/demographic-info");
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(1) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(2)")).click();
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".form-select")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".right-side > .inputs:nth-child(4) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".form")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(4) > .ng-touched")).click();
-        Thread.sleep(2000);
+        driver.navigate().to("http://localhost:4200/create/demographic-info");
+
+        Thread.sleep(5000);
+        String[] cssSelectors = {
+                ".left-side > .inputs:nth-child(1) > .ng-untouched",//firstname textbox
+                ".left-side > .inputs:nth-child(2) > .ng-untouched",//lastname textbox
+                ".form-select",//gender
+                ".inputs:nth-child(2) > .ng-untouched",//date
+                ".right-side > .inputs:nth-child(4) > .ng-untouched",//nationalityid
+
+        };
+        for (String selector : cssSelectors) {
+            driver.findElement(By.cssSelector(selector)).click();
+            driver.findElement(By.cssSelector(".etiya-demographic")).click();//alan dışına tıklama
+            Thread.sleep(2000);
+        }
+
     }
-
-
-
 
     @Test
     public void successfullAddingDemographicInfo() throws InterruptedException {
@@ -105,68 +88,137 @@ public class DemographicPageTests extends BaseTest {
     @Test
     public void nationalityIDVerification() throws  InterruptedException {
         access_demographic_info_screen_AND_required_field();
-        driver.findElement(By.cssSelector(".inputs:nth-child(4) > .ng-invalid")).click();
+        Thread.sleep(2000);
+        WebElement natIdfield = driver.findElement(By.xpath("(//input[@type='text'])[6]"));
+        natIdfield.click();
+
         driver.findElement(By.cssSelector(".form")).click();
-        driver.findElement(By.cssSelector(".error")).click();
-        driver.findElement(By.cssSelector(".error")).sendKeys("121");
-        driver.findElement(By.cssSelector(".form")).click();
-        driver.findElement(By.cssSelector(".error")).click();
-        driver.findElement(By.cssSelector(".ng-touched:nth-child(2)")).sendKeys("12121221212");
+        Thread.sleep(2000);
+
+        natIdfield.clear();
+        natIdfield.sendKeys("121");
+        Thread.sleep(2000);
+
+        natIdfield.clear();
+        natIdfield.sendKeys("12121221212");
+        Thread.sleep(2000);
     }
+    @Test
+    public void customer_record_check() throws InterruptedException{
+        driver.navigate().to("http://localhost:4200/create/demographic-info");
+
+        fillInputField(By.xpath("//input[@type='text']"), "Emine");
+        fillInputField(By.xpath("(//input[@type='text'])[4]"), "Ece");
+        fillInputField(By.xpath("(//input[@type='text'])[2]"), "Coşkunçay");
+        selectDropdownOption(By.cssSelector(".form-select"), "Female");
+        fillInputField(By.xpath("//input[@type='date']"), "01-20-1998");
+        Thread.sleep(2000);
+
+        fillInputField(By.xpath("(//input[@type='text'])[6]"), "22805300246");
+        driver.findElement(By.cssSelector(".next-button")).click();
+        Thread.sleep(2000);
+
+        driver.findElement(By.xpath("//span[contains(.,'OK')]")).click();
+        fillInputField(By.xpath("(//input[@type='text'])[4]"), "");
+        Thread.sleep(2000);
+
+        fillInputField(By.xpath("(//input[@type='text'])[6]"), "22805300256");
+        driver.findElement(By.cssSelector(".next-button")).click();
+        Thread.sleep(2000);
+
+        driver.findElement(By.xpath("//span[contains(.,'OK')]")).click();
+        fillInputField(By.xpath("(//input[@type='text'])[4]"), "");
+        Thread.sleep(2000);
+
+        fillInputField(By.xpath("//input[@type='text']"), "Mehmet");
+        selectDropdownOption(By.cssSelector(".form-select"), "Male");
+        fillInputField(By.xpath("(//input[@type='text'])[4]"), "");
+        fillInputField(By.xpath("//input[@type='date']"), "03-14-1965");
+        Thread.sleep(2000);
+
+        fillInputField(By.xpath("(//input[@type='text'])[6]"), "22859298476");
+        driver.findElement(By.cssSelector(".next-button")).click();
+
+        Thread.sleep(5000);
+    }
+
+    private void fillInputField(By locator, String value) {
+        WebElement element = driver.findElement(locator);
+        element.clear();
+        element.sendKeys(value);
+    }
+
+
+    @Test
+    public void birthdate_check() throws InterruptedException{
+
+        driver.get("http://localhost:4200/create/demographic-info");
+        Thread.sleep(2000);
+
+        WebElement dateInput = driver.findElement(By.xpath("//input[@type='date']"));
+        dateInput.click();
+        Thread.sleep(2000);
+
+        String[] dates = {"05-23-2006", "04-13-2006", "05-12-2010", "01-20-1998"};
+
+        // Her bir tarihi gir ve ardından temizle
+        for (String date : dates) {
+            enterDate(dateInput, date);
+            Thread.sleep(2000);
+            clearDate(dateInput);
+        }
+
+        // Son tarihi gir
+        dateInput.sendKeys(dates[dates.length - 1]);
+        Thread.sleep(2000);
+        dateInput.click();
+    }
+
+
     @Test
     public void nonRequiredFields() throws InterruptedException {
         access_demographic_info_screen_AND_required_field();
-        driver.manage().window().setSize(new Dimension(1280, 642));
-        driver.findElement(By.cssSelector(".inputs:nth-child(4) > .ng-valid")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-valid")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(3) > .ng-valid")).click();
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
+
+        String[] cssSelectors={".inputs:nth-child(4) > .ng-valid",
+                ".inputs:nth-child(1) > .ng-valid",
+                ".inputs:nth-child(3) > .ng-valid"};
+        for (String selector : cssSelectors) {
+            driver.findElement(By.cssSelector(selector)).click();
+            driver.findElement(By.cssSelector(".etiya-demographic")).click();//alan dışına tıklama
+            Thread.sleep(2000);
+        }
+
+
     }
     @Test
     public void unsuccessfullAddingDemographicInfo() throws InterruptedException{
         access_demographic_info_screen_AND_required_field();
-        driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-invalid")).click();
+
         driver.findElement(By.xpath("//input[@type='text']")).sendKeys("Joe");
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".error")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-touched")).sendKeys("Doe");
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".form-select")).click();
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".form-select")).click();
-        {
-            WebElement dropdown = driver.findElement(By.cssSelector(".form-select"));
-            dropdown.findElement(By.xpath("//option[. = 'Female']")).click();
+        driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("Doe");
+        selectDropdownOption(By.cssSelector(".form-select"), "Male");
+
+        String[] dates = {"05-23-2006", "04-13-2006", "05-12-2010", "01-20-1998"};
+        WebElement dateInput = driver.findElement(By.xpath("//input[@type='date']"));
+        dateInput.click();
+        Thread.sleep(2000);
+        // Her bir tarihi gir ve ardından temizle
+        for (String date : dates) {
+            enterDate(dateInput, date);
+            Thread.sleep(2000);
+            clearDate(dateInput);
         }
+
+        dateInput.sendKeys(dates[dates.length - 1]);
+        Thread.sleep(2000);
+        dateInput.click();
         driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).sendKeys("0001-09-04");
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).sendKeys("0019-09-04");
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).sendKeys("0199-09-04");
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).sendKeys("1999-09-04");
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".ng-invalid:nth-child(2)")).click();
-        {
-            WebElement element = driver.findElement(By.cssSelector(".form"));
-            Actions builder = new Actions(driver);
-            builder.moveToElement(element).clickAndHold().perform();
-        }
-        {
-            WebElement element = driver.findElement(By.cssSelector(".etiya-demographic"));
-            Actions builder = new Actions(driver);
-            builder.moveToElement(element).release().perform();
-        }
-        driver.findElement(By.cssSelector(".form")).click();
-        driver.findElement(By.cssSelector(".right-side > .inputs:nth-child(4) > label")).click();
-        driver.findElement(By.cssSelector(".error")).click();
-        driver.findElement(By.cssSelector(".error")).sendKeys("12121");
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-        driver.findElement(By.cssSelector(".error")).click();
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).click();
+
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("12121");
         driver.findElement(By.cssSelector(".etiya-demographic")).click();
 
-
+        Thread.sleep(2000);
     }
 
     @Test
@@ -238,11 +290,21 @@ public class DemographicPageTests extends BaseTest {
         Thread.sleep(500);
     }
 
+    // Tarih alanına tarih girme
+    private void enterDate(WebElement dateInput, String date) {
+        dateInput.clear();
+        dateInput.sendKeys(date);
+    }
 
-
-
-
-
-
+    // Tarih alanını temizleme
+    private void clearDate(WebElement dateInput) {
+        dateInput.clear();
+    }
 
 }
+
+
+
+
+
+
