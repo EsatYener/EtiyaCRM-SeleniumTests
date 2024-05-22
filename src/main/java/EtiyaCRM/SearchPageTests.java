@@ -20,10 +20,6 @@ public class SearchPageTests extends BaseTest{
 
     //access search screen and visibility fields
 
-    private void maximizeWindow() {
-        driver.manage().window().maximize();
-    }
-
     private void performSearchAndClear(String fieldId, String value) throws InterruptedException {
         WebElement element = driver.findElement(By.id(fieldId));
         element.click();
