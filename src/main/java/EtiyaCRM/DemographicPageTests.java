@@ -13,6 +13,11 @@ import java.util.Map;
 
 public class DemographicPageTests extends BaseTest {
     @Before
+    public void setUp(){
+        accessLoginScreen();
+        performLogin("user1","password1");
+        driver.navigate().to("http://localhost:4200/create/demographic-info");
+    }
 
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {
@@ -48,7 +53,6 @@ public class DemographicPageTests extends BaseTest {
     }
     @Test
     public void empty_required_fields() throws InterruptedException{
-        access_demographic_info_screen_AND_required_field();
         //driver.navigate().to("http://localhost:4200/create/demographic-info");
         driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(1) > .ng-untouched")).click();
         driver.findElement(By.cssSelector(".etiya-demographic")).click();
@@ -66,49 +70,43 @@ public class DemographicPageTests extends BaseTest {
         driver.findElement(By.cssSelector(".inputs:nth-child(4) > .ng-touched")).click();
         Thread.sleep(2000);
     }
+
+
+
+
     @Test
     public void successfullAddingDemographicInfo() throws InterruptedException {
-        access_demographic_info_screen_AND_required_field();
 
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-invalid")).click();
-        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("beste");
+        String[][] info = {
+                {".inputs:nth-child(1) > .ng-invalid", "esat"},
+                {".left-side > .inputs:nth-child(2) > .ng-untouched", "yener"},
+                {"//input[@type='date']", "0126-20-00"},
+                {".inputs:nth-child(4) > .ng-invalid", "14920120212"},
+        };
 
-
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".left-side > .inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys("bayraktar");
-
-
-        Thread.sleep(2000);
-
-        driver.findElement(By.cssSelector(".form-select")).click();
-        {
-            WebElement dropdown = driver.findElement(By.cssSelector(".form-select"));
-            dropdown.findElement(By.xpath("//option[. = 'Female']")).click();
+        for (String[] input : info) {
+            By locator = input[0].startsWith("//") ? By.xpath(input[0]) : By.cssSelector(input[0]);
+            Thread.sleep(500);
+            enterText(locator, input[1]);
+            Thread.sleep(500);
         }
 
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//input[@type='date']")).click();
-        driver.findElement(By.xpath("//input[@type='date']")).sendKeys("1999-09-04");
+        Thread.sleep(500);
 
+        selectDropdownOption(By.cssSelector(".form-select"), "Male");
+        Thread.sleep(500);
+        clickElement(By.cssSelector(".etiya-demographic"));
+        Thread.sleep(500);
+        clickElement(By.cssSelector(".next-button"));
+        Thread.sleep(1000);
+    }
 
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("(//input[@type='text'])[6]")).click();
-        driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("12345678910");
-
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".etiya-demographic")).click();
-
-
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(1) > .ng-untouched")).sendKeys("melodi");
-
-
-        Thread.sleep(2000);
-        driver.findElement(By.cssSelector(".next-button")).click();
-
+    protected void selectDropdownOption(By locator, String optionText) throws InterruptedException {
+        WebElement dropdown = driver.findElement(locator);
+        dropdown.click();
+        Thread.sleep(500);
+        dropdown.findElement(By.xpath("//option[. = '" + optionText + "']")).click();
+        Thread.sleep(500);
     }
     @Test
     public void nationalityIDVerification() throws  InterruptedException {
