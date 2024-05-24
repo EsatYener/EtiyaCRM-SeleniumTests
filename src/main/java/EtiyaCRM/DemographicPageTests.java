@@ -19,6 +19,82 @@ public class DemographicPageTests extends BaseTest {
         driver.navigate().to("http://localhost:4200/create/demographic-info");
     }
 
+
+    private void moveToElement(By locator) {
+        WebElement element = driver.findElement(locator);
+        Actions builder = new Actions(driver);
+        builder.moveToElement(element).perform();
+    }
+
+    protected void selectDropdownOption(By locator, String optionText) throws InterruptedException {
+        WebElement dropdown = driver.findElement(locator);
+        dropdown.click();
+        Thread.sleep(500);
+        dropdown.findElement(By.xpath("//option[. = '" + optionText + "']")).click();
+        Thread.sleep(500);
+    }
+
+
+    @Test
+    public void successfull_create_customer() throws InterruptedException{
+
+        String[][] demographicInfo = {
+                {GlobalConstants.FIRST_NAME_LOCATOR, "esat"},
+                {GlobalConstants.LAST_NAME_LOCATOR, "yener"},
+                {GlobalConstants.BIRTH_DATE_LOCATOR, "0126-20-00"},
+                {GlobalConstants.NATIONAL_ID_LOCATOR, "14920120212"}
+        };
+
+        for (String[] info : demographicInfo) {
+            By locator = info[0].startsWith("//") ? By.xpath(info[0]) : By.cssSelector(info[0]);
+            enterText(locator, info[1]);
+        }
+        Thread.sleep(500);
+        selectDropdownOption(By.cssSelector(GlobalConstants.GENDER_DROPDOWN_LOCATOR), "Male");
+        Thread.sleep(500);
+        clickElement(By.cssSelector(GlobalConstants.ETIYA_DEMOGRAPHIC_LOCATOR));
+        Thread.sleep(500);
+        clickElement(By.cssSelector(GlobalConstants.NEXT_BUTTON_LOCATOR));
+        moveToElement(By.tagName(GlobalConstants.BODY_LOCATOR));
+
+        Thread.sleep(1000);
+        clickElement(By.cssSelector(GlobalConstants.ADD_BUTTON_LOCATOR));
+        Thread.sleep(500);
+
+
+        selectDropdownOption(By.cssSelector(GlobalConstants.CITY_DROPDOWN_LOCATOR), "Ankara");
+        driver.findElement(By.xpath(GlobalConstants.STREET_lOCATOR)).sendKeys("test");
+        Thread.sleep(500);
+        driver.findElement(By.cssSelector(GlobalConstants.HOUSE_NUMBER_LOCATOR)).click();
+        driver.findElement(By.cssSelector(GlobalConstants.HOUSE_NUMBER_LOCATOR)).sendKeys("123");
+        driver.findElement(By.cssSelector(GlobalConstants.DESCRIPTION_LOCATOR)).click();
+        driver.findElement(By.cssSelector(GlobalConstants.DESCRIPTION_LOCATOR)).sendKeys("test");
+        Thread.sleep(500);
+
+        clickElement(By.cssSelector(GlobalConstants.SAVE_BUTTON_LOCATOR));
+        moveToElement(By.cssSelector(GlobalConstants.SAVE_BUTTON_LOCATOR));
+        moveToElement(By.tagName(GlobalConstants.BODY_LOCATOR));
+        Thread.sleep(500);
+
+        clickElement(By.cssSelector(GlobalConstants.NEXT_BUTTON_LOCATOR));
+
+        String[][] contact_info = {
+                {GlobalConstants.EMAIL_LOCATOR, "test@test.com"},
+                {GlobalConstants.PHONE_LOCATOR, "05555555555"}
+        };
+
+        for (String[] info : contact_info) {
+            By locator = info[0].startsWith("//") ? By.xpath(info[0]) : By.cssSelector(info[0]);
+            enterText(locator, info[1]);
+        }
+
+        // Create customer
+        clickElement(By.cssSelector(GlobalConstants.CREATE_BUTTON_LOCATOR));
+        moveToElement(By.cssSelector(GlobalConstants.CREATE_BUTTON_LOCATOR));
+        moveToElement(By.tagName(GlobalConstants.BODY_LOCATOR));
+    }
+
+
     @Test
     public void access_demographic_info_screen_AND_required_field()throws InterruptedException {
         /*driver.navigate().to("http://localhost:4200/login");
@@ -169,74 +245,6 @@ public class DemographicPageTests extends BaseTest {
 
     }
 
-    @Test
-    public void successfull_create_customer() throws InterruptedException{
-// Enter demographic information
-        String[][] demographicInfo = {
-                {".inputs:nth-child(1) > .ng-invalid", "esat"},
-                {".left-side > .inputs:nth-child(2) > .ng-untouched", "yener"},
-                {"//input[@type='date']", "0126-20-00"},
-                {".inputs:nth-child(4) > .ng-invalid", "14920120212"}
-        };
-
-        for (String[] info : demographicInfo) {
-            By locator = info[0].startsWith("//") ? By.xpath(info[0]) : By.cssSelector(info[0]);
-            enterText(locator, info[1]);
-        }
-        selectDropdownOption(By.cssSelector(".form-select"), "Male");
-
-        clickElement(By.cssSelector(".etiya-demographic"));
-        clickElement(By.cssSelector(".next-button"));
-        moveToElement(By.tagName("body"));
-
-
-        clickElement(By.cssSelector(".add-button"));
-
-        selectDropdownOption(By.cssSelector(".form-select"), "Ankara");
-        driver.findElement(By.xpath("(//input[@type='text'])[3]")).sendKeys("test");
-        Thread.sleep(500);
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(2) > .ng-untouched")).sendKeys("123");
-        driver.findElement(By.cssSelector(".inputs:nth-child(3) > .ng-untouched")).click();
-        driver.findElement(By.cssSelector(".inputs:nth-child(3) > .ng-untouched")).sendKeys("test");
-        Thread.sleep(500);
-
-        clickElement(By.cssSelector(".save-button"));
-        moveToElement(By.cssSelector(".save-button"));
-        moveToElement(By.tagName("body"));
-        Thread.sleep(500);
-
-        clickElement(By.cssSelector(".next-button"));
-
-        String[][] contact_info = {
-                {".inputs:nth-child(1) > .ng-invalid", "test@test.com"},
-                {".inputs:nth-child(2) > .ng-invalid", "05555555555"}
-        };
-
-        for (String[] info : contact_info) {
-            By locator = info[0].startsWith("//") ? By.xpath(info[0]) : By.cssSelector(info[0]);
-            enterText(locator, info[1]);
-        }
-
-        // Create customer
-        clickElement(By.cssSelector(".create-button"));
-        moveToElement(By.cssSelector(".create-button"));
-        moveToElement(By.tagName("body"));
-    }
-
-    private void moveToElement(By locator) {
-        WebElement element = driver.findElement(locator);
-        Actions builder = new Actions(driver);
-        builder.moveToElement(element).perform();
-    }
-
-    protected void selectDropdownOption(By locator, String optionText) throws InterruptedException {
-        WebElement dropdown = driver.findElement(locator);
-        dropdown.click();
-        Thread.sleep(500);
-        dropdown.findElement(By.xpath("//option[. = '" + optionText + "']")).click();
-        Thread.sleep(500);
-    }
 
 
 
