@@ -53,13 +53,13 @@ public class CustomerRecordsTests extends BaseTest {
 
     private void search(String field, String value) throws InterruptedException {
         enterText(By.id(field), value);
-        clickElement(By.xpath("//button[contains(.,'Search')]"));
+        clickElement(By.xpath(GlobalConstants.SEARCH_BUTTON_LOCATOR));
         Thread.sleep(2000);
     }
 
     private void searchAndClear(String field, String value) throws InterruptedException {
         search(field, value);
-        clickElement(By.xpath("//button[contains(.,'Clear')]"));
+        clickElement(By.xpath(GlobalConstants.CLEAR_BUTTON_LOCATOR));
     }
 
     private void performPagination() throws InterruptedException {

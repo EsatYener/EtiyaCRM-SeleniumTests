@@ -25,4 +25,10 @@ public class GlobalConstants {
     public static final String NEXT_BUTTON_LOCATOR = ".next-button";
     public static final String CREATE_BUTTON_LOCATOR = ".create-button";
     public static final String BODY_LOCATOR = "body";
+    public static final String SEARCH_BUTTON_LOCATOR = "//button[contains(.,'Search')]";
+    public static final String CLEAR_BUTTON_LOCATOR = "//button[contains(.,'Clear')]";
+
+
+
+
 }

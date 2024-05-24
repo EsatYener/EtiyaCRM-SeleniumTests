@@ -24,15 +24,15 @@ public class SearchPageTests extends BaseTest{
         WebElement element = driver.findElement(By.id(fieldId));
         element.click();
         element.sendKeys(value);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        driver.findElement(By.xpath(GlobalConstants.SEARCH_BUTTON_LOCATOR)).click();
         Thread.sleep(1000);
-        driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+        driver.findElement(By.xpath(GlobalConstants.CLEAR_BUTTON_LOCATOR)).click();
     }
     private void performSearch(String fieldId, String value) throws InterruptedException {
         WebElement element = driver.findElement(By.id(fieldId));
         element.click();
         element.sendKeys(value);
-        driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+        driver.findElement(By.xpath(GlobalConstants.CLEAR_BUTTON_LOCATOR)).click();
         Thread.sleep(1000);
     }
 
@@ -75,21 +75,19 @@ public class SearchPageTests extends BaseTest{
 
 
       String[][] testData = {
-              {"firstName", "esat"},
-              {"lastName", "yener"},
-              {"secondName", "a"},
-              {"idNumber", "13"},
-              {"idNumber", "9"},
-              {"customerId", "333c"}
+              {"firstName", "melodi"},
+              {"lastName", "bayraktar"},
+              {"secondName", "b"},
+              {"customerId", "9d9b"}
       };
 
       for (String[] data : testData) {
           driver.findElement(By.id(data[0])).click();
           driver.findElement(By.id(data[0])).sendKeys(data[1]);
           Thread.sleep(2000);
-          driver.findElement(By.xpath("//button[contains(.,'Search')]")).click();
+          driver.findElement(By.xpath(GlobalConstants.SEARCH_BUTTON_LOCATOR)).click();
           Thread.sleep(2000);
-          driver.findElement(By.xpath("//button[contains(.,'Clear')]")).click();
+          driver.findElement(By.xpath(GlobalConstants.CLEAR_BUTTON_LOCATOR)).click();
       }
   }
 
